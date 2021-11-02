@@ -78,7 +78,41 @@ registerUser = async (req, res) => {
     }
 }
 
+loginUser = async (req, res) => {
+    try{
+        const {email, password} = req.query;
+        const foundUser = await User.findOne({email: email});
+        if(!foundUser){
+            return res.status(400).json({ errorMessage: "A User with the email provided does not exist."});
+        }
+        const match = await bcrypt.compare(password, foundUser.passwordHash);
+        if(match){
+            const token = auth.signToken(foundUser); 
+
+            await res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            }).status(200).json({
+                success: true, 
+                user: {
+                    firstName: foundUser.firstName,
+                    lastName: foundUser.lastName,
+                    email: foundUser.email
+                }
+            }).send(); 
+        }
+        else{
+            return res.status(400).json({ errorMessage: "Wrong password entered."});
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
 module.exports = {
     getLoggedIn,
-    registerUser
+    registerUser,
+    loginUser
 }
