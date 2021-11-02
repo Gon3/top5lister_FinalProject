@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Alert from '@mui/material/Alert';
 import AuthContext from '../auth'
 import Copyright from './Copyright'
 import Avatar from '@mui/material/Avatar';
@@ -7,31 +8,65 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
+import Modal from '@mui/material/Modal';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
+import { useState } from 'react';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext)
+    const { store } = useContext(GlobalStoreContext);
+    const [modalOpen, setModalOpen] = useState(false); 
+    const [warningMessage, setMessage] = useState(""); 
+    
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'white',
+        border: '2px solid #000',
+        borderRadius: '10px',
+        boxShadow: 24,
+        pt: 2,
+        px: 4,
+        pb: 3,
+      };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         auth.registerUser({
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            passwordVerify: formData.get('passwordVerify')
-        }, store);
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        passwordVerify: formData.get('passwordVerify')
+        }, store, message => {setMessage(message); setModalOpen(true);});
+    };
+
+    const handleClose = () =>{
+        setModalOpen(false); 
     };
 
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                <Modal
+                    hideBackdrop
+                    open={modalOpen}
+                    aria-labelledby="child-modal-title"
+                    aria-describedby="child-modal-description"
+                >
+                    <Box sx={{ ...style}}>
+                        <Alert severity="error">{warningMessage}</Alert>
+                        <Button onClick={handleClose}>OK</Button>
+                    </Box>
+                </Modal>
                 <Box
                     sx={{
                         marginTop: 8,

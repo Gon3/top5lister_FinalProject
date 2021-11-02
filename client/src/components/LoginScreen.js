@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,9 +11,11 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useContext } from 'react';
+import { useState } from 'react';
 import GlobalStoreContext from '../store';
 import AuthContext from '../auth';
 import Copyright from './Copyright';
@@ -22,6 +25,23 @@ export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext)
     const theme = createTheme();
+    const [modalOpen, setModalOpen] = useState(false); 
+    const [warningMessage, setMessage] = useState(""); 
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'white',
+        border: '2px solid #000',
+        borderRadius: '10px',
+        boxShadow: 24,
+        pt: 2,
+        px: 4,
+        pb: 3,
+      };
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -30,13 +50,28 @@ export default function LoginScreen() {
         auth.loginUser({
         email: data.get('email'),
         password: data.get('password'),
-        }, store);
+        }, store, message => {setMessage(message); setModalOpen(true);});
+    };
+
+    const handleClose = () =>{
+        setModalOpen(false); 
     };
 
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
+                <Modal
+                    hideBackdrop
+                    open={modalOpen}
+                    aria-labelledby="child-modal-title"
+                    aria-describedby="child-modal-description"
+                >
+                    <Box sx={{ ...style}}>
+                        <Alert severity="error">{warningMessage}</Alert>
+                        <Button onClick={handleClose}>OK</Button>
+                    </Box>
+                </Modal>
                 <Grid
                 item
                 xs={false}
