@@ -111,8 +111,19 @@ loginUser = async (req, res) => {
     }
 }
 
+logoutUser = async (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 0 
+    }); 
+    return res.status(200).json({success: true}); 
+}
+
 module.exports = {
     getLoggedIn,
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

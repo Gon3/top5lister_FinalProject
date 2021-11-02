@@ -77,11 +77,25 @@ function AuthContextProvider(props) {
                 payload: {
                     user: response.data.user
                 }
-            })
+            });
             history.push("/");
             store.loadIdNamePairs();
         }
         
+    }
+
+    auth.logoutUser = async function(){
+        const response = await api.logoutUser();
+        if(response.status === 200){
+            authReducer({
+                type: AuthActionType.GET_LOGGED_IN,
+                payload:{
+                    user: null,
+                    loggedIn: false
+                }
+            });
+            history.push("/");
+        }
     }
 
     return (
