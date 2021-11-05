@@ -18,12 +18,12 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair } = props;
+    const { idNamePair, errorCallback } = props;
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
+            store.setCurrentList(id, errorCallback);
         }
     }
 
@@ -48,7 +48,7 @@ function ListCard(props) {
     function handleKeyPress(event) {
         if (event.code === "Enter") {
             let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
+            store.changeListName(id, text, errorCallback);
             toggleEdit();
         }
     }

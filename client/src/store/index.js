@@ -163,32 +163,33 @@ function GlobalStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    store.changeListName = async function (id, newName) {
-        let response = await api.getTop5ListById(id);
-        if (response.data.success) {
-            let top5List = response.data.top5List;
-            top5List.name = newName;
-            async function updateList(top5List) {
-                response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.success) {
-                    async function getListPairs(top5List) {
-                        response = await api.getTop5ListPairs();
-                        if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
-                            storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: pairsArray,
-                                    top5List: top5List
-                                }
-                            });
+    store.changeListName = async function (id, newName, warn) {
+        await api.getTop5ListById(id, auth.user.email).then(response => {
+            if (response.data.success) {
+                let top5List = response.data.top5List;
+                top5List.name = newName;
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(top5List._id, top5List, auth.user.email);
+                    if (response.data.success) {
+                        async function getListPairs(top5List) {
+                            response = await api.getTop5ListPairs(auth.user.email);
+                            if (response.data.success) {
+                                let pairsArray = response.data.idNamePairs;
+                                storeReducer({
+                                    type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                    payload: {
+                                        idNamePairs: pairsArray,
+                                        top5List: top5List
+                                    }
+                                });
+                            }
                         }
+                        getListPairs(top5List);
                     }
-                    getListPairs(top5List);
                 }
+                updateList(top5List);
             }
-            updateList(top5List);
-        }
+        }).catch(({response}) => warn(response.data.message)); 
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
@@ -230,7 +231,7 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        const response = await api.getTop5ListPairs();
+        const response = await api.getTop5ListPairs(auth.user.email);
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
             storeReducer({
@@ -249,7 +250,7 @@ function GlobalStoreContextProvider(props) {
     // showDeleteListModal, and hideDeleteListModal
     store.markListForDeletion = async function (id) {
         // GET THE LIST
-        let response = await api.getTop5ListById(id);
+        let response = await api.getTop5ListById(id, auth.user.email);
         if (response.data.success) {
             let top5List = response.data.top5List;
             storeReducer({
@@ -260,7 +261,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.deleteList = async function (listToDelete) {
-        let response = await api.deleteTop5ListById(listToDelete._id);
+        let response = await api.deleteTop5ListById(listToDelete._id, auth.user.email);
         if (response.data.success) {
             store.loadIdNamePairs();
             history.push("/");
@@ -282,20 +283,23 @@ function GlobalStoreContextProvider(props) {
     // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE
     // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,
     // moveItem, updateItem, updateCurrentList, undo, and redo
-    store.setCurrentList = async function (id) {
-        let response = await api.getTop5ListById(id);
-        if (response.data.success) {
+    store.setCurrentList = async function (id, warn) {
+        await api.getTop5ListById(id, auth.user.email).then( response => {
+        
             let top5List = response.data.top5List;
-
-            response = await api.updateTop5ListById(top5List._id, top5List);
-            if (response.data.success) {
-                storeReducer({
-                    type: GlobalStoreActionType.SET_CURRENT_LIST,
-                    payload: top5List
-                });
-                history.push("/top5list/" + top5List._id);
+            async function setList(top5List){
+                response = await api.updateTop5ListById(top5List._id, top5List, auth.user.email);
+                if (response.data.success) {
+                    storeReducer({
+                        type: GlobalStoreActionType.SET_CURRENT_LIST,
+                        payload: top5List
+                    });
+                    history.push("/top5list/" + top5List._id);
+                }
             }
+            setList(top5List); 
         }
+        ).catch(({response}) => warn(response.data.message));
     }
 
     store.addMoveItemTransaction = function (start, end) {
@@ -337,7 +341,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.updateCurrentList = async function () {
-        const response = await api.updateTop5ListById(store.currentList._id, store.currentList);
+        const response = await api.updateTop5ListById(store.currentList._id, store.currentList, auth.user.email);
         if (response.data.success) {
             storeReducer({
                 type: GlobalStoreActionType.SET_CURRENT_LIST,

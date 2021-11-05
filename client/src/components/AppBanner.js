@@ -28,7 +28,7 @@ export default function AppBanner() {
 
     const handleLogout = () => {
         handleMenuClose();
-        auth.logoutUser();
+        auth.logoutUser(store);
     }
 
     const menuId = 'primary-search-account-menu';
@@ -81,7 +81,12 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
-        return <AccountCircle />;
+        if(loggedIn){
+            return auth.user.firstName[0] + auth.user.lastName[0]; 
+        }
+        else{
+            return <AccountCircle />;
+        }
     }
 
     return (
