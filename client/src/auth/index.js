@@ -92,7 +92,7 @@ function AuthContextProvider(props) {
                     loggedIn: false
                 }
             });
-            store.closeCurrentList(); 
+            store.reset(); 
             history.push("/");
         }
     }

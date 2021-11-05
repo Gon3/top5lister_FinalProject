@@ -63,8 +63,16 @@ export default function RegisterScreen() {
                     aria-describedby="child-modal-description"
                 >
                     <Box sx={{ ...style}}>
-                        <Alert severity="error">{warningMessage}</Alert>
-                        <Button onClick={handleClose}>OK</Button>
+                        <Grid
+                            container
+                            spacing={0}
+                            direction="column"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Alert severity="error">{warningMessage}</Alert>
+                            <Button onClick={handleClose}>OK</Button>
+                        </Grid>
                     </Box>
                 </Modal>
                 <Box

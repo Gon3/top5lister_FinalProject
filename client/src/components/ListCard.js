@@ -37,12 +37,15 @@ function ListCard(props) {
         if (newActive) {
             store.setIsListNameEditActive();
         }
+        else{
+            store.resetIsListNameEditActive(); 
+        }
         setEditActive(newActive);
     }
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
-        store.markListForDeletion(id);
+        store.markListForDeletion(id, errorCallback);
     }
 
     function handleKeyPress(event) {
@@ -73,14 +76,15 @@ function ListCard(props) {
         >
                 <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'
+                                disabled={store.isListNameEditActive}>
                         <EditIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
+                    }} aria-label='delete' disabled={store.isListNameEditActive}>
                         <DeleteIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
