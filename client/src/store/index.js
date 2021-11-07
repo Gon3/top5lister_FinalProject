@@ -28,6 +28,7 @@ export const GlobalStoreActionType = {
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     RESET_LIST_NAME_EDIT_ACTIVE: "RESET_LIST_NAME_EDIT_ACTIVE",
+    RESET_ITEM_EDIT_ACTIVE: "RESET_ITEM_EDIT_ACTIVE", 
     CLEAR_STORE: "CLEAR_STORE"
 }
 
@@ -169,6 +170,16 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                });
+            }
+            case GlobalStoreActionType.RESET_ITEM_EDIT_ACTIVE: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -409,6 +420,13 @@ function GlobalStoreContextProvider(props) {
     store.setIsItemEditActive = function () {
         storeReducer({
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
+            payload: null
+        });
+    }
+
+    store.resetIsItemEditActive = function () {
+        storeReducer({
+            type: GlobalStoreActionType.RESET_ITEM_EDIT_ACTIVE,
             payload: null
         });
     }

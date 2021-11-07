@@ -103,8 +103,8 @@ const HomeScreen = () => {
             <Modal
                     hideBackdrop
                     open={modalOpen}
-                    aria-labelledby="child-modal-title"
-                    aria-describedby="child-modal-description"
+                    aria-labelledby="error-modal-title"
+                    aria-describedby="error-modal-description"
                 >
                     <Box sx={{ ...style}}>
                         <Grid
@@ -123,8 +123,8 @@ const HomeScreen = () => {
             <Modal
                     hideBackdrop
                     open={deleteOpen}
-                    aria-labelledby="child-modal-title"
-                    aria-describedby="child-modal-description"
+                    aria-labelledby="delete-modal-title"
+                    aria-describedby="delete-modal-description"
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
