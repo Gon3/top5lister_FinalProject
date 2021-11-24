@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
-import EditToolbar from './EditToolbar'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -32,7 +31,7 @@ export default function AppBanner() {
     }
 
     const menuId = 'primary-search-account-menu';
-    const loggedOutMenu = (
+    const guestMenu = (
         <Menu
             anchorEl={anchorEl}
             anchorOrigin={{
@@ -50,6 +49,7 @@ export default function AppBanner() {
         >
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
+            <MenuItem onClick={handleLogout}>Logout Guest</MenuItem>
         </Menu>
     );
     const loggedInMenu = 
@@ -71,17 +71,16 @@ export default function AppBanner() {
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>        
 
-    let editToolbar = "";
-    let menu = loggedOutMenu;
-    if (auth.loggedIn) {
-        menu = loggedInMenu;
-        if (store.currentList) {
-            editToolbar = <EditToolbar />;
+    let menu = null
+    if(auth.loggedIn){
+        menu = guestMenu;
+        if (!auth.user.isGuest) {
+            menu = loggedInMenu;
         }
     }
     
     function getAccountMenu(loggedIn) {
-        if(loggedIn){
+        if(loggedIn && !auth.user.isGuest){
             return auth.user.firstName[0] + auth.user.lastName[0]; 
         }
         else{
@@ -101,9 +100,8 @@ export default function AppBanner() {
                     >
                         <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
                     </Typography>
-                    <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
+                        {auth.loggedIn && (<IconButton
                             size="large"
                             edge="end"
                             aria-label="account of current user"
@@ -113,7 +111,7 @@ export default function AppBanner() {
                             color="inherit"
                         >
                             { getAccountMenu(auth.loggedIn) }
-                        </IconButton>
+                        </IconButton> )}
                     </Box>
                 </Toolbar>
             </AppBar>

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
-import HomeScreen from './HomeScreen'
-import SplashScreen from './SplashScreen'
+import ListViewer from './ListViewer'
+import WelcomeScreen from './WelcomeScreen'
 import AuthContext from '../auth'
 
 export default function HomeWrapper() {
@@ -8,7 +8,7 @@ export default function HomeWrapper() {
     console.log("HomeWrapper auth.loggedIn: " + auth.loggedIn);
     
     if (auth.loggedIn)
-        return <HomeScreen />
+        return <ListViewer />
     else
-        return <SplashScreen />
+        return <WelcomeScreen />
 }

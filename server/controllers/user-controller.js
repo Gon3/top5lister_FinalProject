@@ -10,7 +10,8 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
-                email: loggedInUser.email
+                email: loggedInUser.email,
+                isGuest: false
             }
         }).send();
     })
@@ -18,7 +19,7 @@ getLoggedIn = async (req, res) => {
 
 registerUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, passwordVerify } = req.body;
+        const { firstName, lastName, userName, email, password, passwordVerify } = req.body;
         if (!firstName || !lastName || !email || !password || !passwordVerify) {
             return res
                 .status(400)
@@ -38,6 +39,13 @@ registerUser = async (req, res) => {
                     errorMessage: "Please enter the same password twice."
                 })
         }
+        if(userName === "Community" || userName === "Guest" || email === "community@top5lister.com" || email === "guestuser@top5lister.com") {
+            return res
+                .status(400)
+                .json({
+                    errorMessage: "You cannot use the provided UserName/email!"
+                })
+        }
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res
@@ -48,12 +56,22 @@ registerUser = async (req, res) => {
                 })
         }
 
+        const existingUser2 = await User.findOne({ userName: userName });
+        if (existingUser2) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    errorMessage: "An account with this User Name already exists."
+                })
+        }
+
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            firstName, lastName, email, passwordHash
+            firstName, lastName, userName, email, passwordHash
         });
         const savedUser = await newUser.save();
 
@@ -69,7 +87,8 @@ registerUser = async (req, res) => {
             user: {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
-                email: savedUser.email
+                userName: savedUser.userName,
+                isGuest: false
             }
         }).send();
     } catch (err) {
@@ -80,8 +99,11 @@ registerUser = async (req, res) => {
 
 loginUser = async (req, res) => {
     try{
-        const {email, password} = req.query;
-        const foundUser = await User.findOne({email: email});
+        const {userName, password} = req.query;
+        if(userName === "Community" || userName === "Guest"){
+            return res.status(400).json({ errorMessage: "You cannot login with this userName"});
+        }
+        const foundUser = await User.findOne({userName: userName});
         if(!foundUser){
             return res.status(400).json({ errorMessage: "A User with the email provided does not exist."});
         }
@@ -98,12 +120,60 @@ loginUser = async (req, res) => {
                 user: {
                     firstName: foundUser.firstName,
                     lastName: foundUser.lastName,
-                    email: foundUser.email
+                    userName: foundUser.userName,
+                    isGuest: false
                 }
             }).send(); 
         }
         else{
             return res.status(400).json({ errorMessage: "Wrong password entered."});
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
+loginGuest = async (req, res) => {
+    try{
+        const foundGuest = await User.findOne({userName: "Guest"});
+        if(!foundGuest){
+            const newUser = new User({
+                firstName: "Guest", lastName:"User", userName: "Guest", email: "guestuser@top5lister.com", passwordHash:"GuestUser"
+            });
+            const savedUser = await newUser.save();
+            const token = auth.signToken(savedUser);
+
+            await res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            }).status(200).json({
+                success: true,
+                user: {
+                    firstName: savedUser.firstName,
+                    lastName: savedUser.lastName,
+                    userName: savedUser.userName,
+                    isGuest: true
+                }
+            }).send();
+        }
+        else{
+            const token = auth.signToken(foundGuest); 
+
+            await res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            }).status(200).json({
+                success: true, 
+                user: {
+                    firstName: foundGuest.firstName,
+                    lastName: foundGuest.lastName,
+                    userName: foundGuest.userName,
+                    isGuest: true
+                }
+            }).send();
         }
     } catch (err) {
         console.error(err);
@@ -125,5 +195,6 @@ module.exports = {
     getLoggedIn,
     registerUser,
     loginUser,
+    loginGuest,
     logoutUser
 }
