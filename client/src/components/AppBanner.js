@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
+import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -49,7 +50,7 @@ export default function AppBanner() {
         >
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
-            <MenuItem onClick={handleLogout}>Logout Guest</MenuItem>
+            <MenuItem onClick={handleLogout}><Link to='/'>Logout Guest</Link></MenuItem>
         </Menu>
     );
     const loggedInMenu = 
@@ -72,33 +73,38 @@ export default function AppBanner() {
         </Menu>        
 
     let menu = null
+    let iconLink = "/"
     if(auth.loggedIn){
         menu = guestMenu;
+        iconLink = "/list"
         if (!auth.user.isGuest) {
             menu = loggedInMenu;
+            iconLink = "#"
         }
     }
     
-    function getAccountMenu(loggedIn) {
-        if(loggedIn && !auth.user.isGuest){
-            return auth.user.firstName[0] + auth.user.lastName[0]; 
+    function getAccountMenu(isGuest) {
+        if(!isGuest){
+            return <Avatar sx={{backgroundColor: 'purple', border: '1px solid black', m: 1}}> 
+            {auth.user.firstName[0] + auth.user.lastName[0]} </Avatar>; 
         }
         else{
             return <AccountCircle />;
         }
     }
+    
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1}}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
                     <Typography                        
                         variant="h4"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}                        
+                        sx={{ display: { xs: 'none', sm: 'block' }}}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
+                       <Link style={{ textDecoration: 'none', color: 'orange' }} to={iconLink}>T<sup>5</sup>L</Link>
                     </Typography>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         {auth.loggedIn && (<IconButton
@@ -110,7 +116,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            { getAccountMenu(auth.user.isGuest) }
                         </IconButton> )}
                     </Box>
                 </Toolbar>

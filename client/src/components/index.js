@@ -1,5 +1,5 @@
 import AppBanner from './AppBanner'
-import HomeWrapper from './HomeWrapper'
+import ListViewer from './ListViewer'
 import ListCard from './ListCard'
 import RegisterScreen from './RegisterScreen'
 import LoginScreen from './LoginScreen'
@@ -13,7 +13,7 @@ import WelcomeScreen from './WelcomeScreen'
 */
 export { 
     AppBanner, 
-    HomeWrapper,
+    ListViewer,
     ListCard, 
     RegisterScreen,
     LoginScreen,

@@ -8,13 +8,15 @@ console.log("create AuthContext: " + AuthContext);
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    SET_ERROR_MESSAGE: "SET_ERROR_MESSAGE"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        errorMessage: null
     });
     const history = useHistory();
 
@@ -28,14 +30,23 @@ function AuthContextProvider(props) {
             case AuthActionType.GET_LOGGED_IN: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: payload.loggedIn
+                    loggedIn: payload.loggedIn,
+                    errorMessage: null
                 });
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    errorMessage: null
                 })
+            }
+            case AuthActionType.SET_ERROR_MESSAGE: {
+                return setAuth({
+                    user: auth.user,
+                    loggedIn: auth.loggedIn,
+                    errorMessage: payload.message
+                });
             }
             default:
                 return auth;
@@ -55,7 +66,7 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(userData, store, warn) {
+    auth.registerUser = async function(userData, store) {
         await api.registerUser(userData).then(response => {
             authReducer({
                 type: AuthActionType.REGISTER_USER,
@@ -63,12 +74,18 @@ function AuthContextProvider(props) {
                     user: response.data.user
                 }
             });
-            history.push("/");
-            store.loadIdNamePairs();})
-        .catch(({response}) => warn(response.data.errorMessage));      
+            history.push("/list");
+            //store.loadIdNamePairs();
+        })
+        .catch(({response}) => authReducer({
+            type: AuthActionType.SET_ERROR_MESSAGE,
+            payload:{
+                message: response.data.errorMessage
+            }
+        }));      
     }
 
-    auth.loginUser = async function(userData, store, warn){
+    auth.loginUser = async function(userData, store){
         await api.loginUser(userData).then(response => {
             authReducer({
                 type: AuthActionType.REGISTER_USER,
@@ -76,9 +93,15 @@ function AuthContextProvider(props) {
                     user: response.data.user
                 }
             });
-            history.push("/");
-            store.loadIdNamePairs();})
-        .catch(({response}) => warn(response.data.errorMessage));
+            history.push("/list");
+            //store.loadIdNamePairs();
+        })
+        .catch(({response}) => authReducer({
+            type: AuthActionType.SET_ERROR_MESSAGE,
+            payload:{
+                message: response.data.errorMessage
+            }
+        }));
         
     }
 
@@ -92,10 +115,34 @@ function AuthContextProvider(props) {
                     loggedIn: false
                 }
             });
-            store.reset(); 
+            //store.reset(); 
             history.push("/");
         }
     }
+
+    auth.loginGuest = async function(store){
+        const response = await api.loginGuest();
+        if(response.status === 200){
+            authReducer({
+                type: AuthActionType.REGISTER_USER,
+                payload: {
+                    user: response.data.user
+                }
+            });
+            //store.loadIdNamePairs();
+            history.push("/list");
+        }
+    }
+
+    auth.resetMessage = function () {
+        authReducer({
+            type: AuthActionType.SET_ERROR_MESSAGE,
+            payload:{
+                message: null
+            }
+        });
+    }
+
 
     return (
         <AuthContext.Provider value={{

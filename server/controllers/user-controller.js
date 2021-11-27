@@ -10,8 +10,8 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
-                email: loggedInUser.email,
-                isGuest: false
+                userName: loggedInUser.userName,
+                isGuest: (loggedInUser.userName === "Guest")
             }
         }).send();
     })
@@ -39,11 +39,18 @@ registerUser = async (req, res) => {
                     errorMessage: "Please enter the same password twice."
                 })
         }
-        if(userName === "Community" || userName === "Guest" || email === "community@top5lister.com" || email === "guestuser@top5lister.com") {
+        if(userName === "Community" || userName === "Guest") {
             return res
                 .status(400)
                 .json({
-                    errorMessage: "You cannot use the provided UserName/email!"
+                    errorMessage: "An account with this User Name already exists."
+                })
+        }
+        if(email === "community@top5lister.com" || email === "guestuser@top5lister.com") {
+            return res
+                .status(400)
+                .json({
+                    errorMessage: "An account with this email address already exists."
                 })
         }
         const existingUser = await User.findOne({ email: email });
@@ -105,7 +112,7 @@ loginUser = async (req, res) => {
         }
         const foundUser = await User.findOne({userName: userName});
         if(!foundUser){
-            return res.status(400).json({ errorMessage: "A User with the email provided does not exist."});
+            return res.status(400).json({ errorMessage: "A User with the username provided does not exist."});
         }
         const match = await bcrypt.compare(password, foundUser.passwordHash);
         if(match){

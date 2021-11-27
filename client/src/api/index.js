@@ -23,29 +23,36 @@ const api = axios.create({
 // WE NEED TO PUT THINGS INTO THE DATABASE OR IF WE HAVE SOME
 // CUSTOM FILTERS FOR QUERIES
 export const createTop5List = (payload) => api.post(`/top5list/`, payload)
-export const getAllTop5Lists = (email) => api.get(`/top5lists/${email}/`)
-export const getTop5ListPairs = (email) => api.get(`/top5listpairs/${email}/`)
-export const updateTop5ListById = (id, payload, email) => api.put(`/top5list/${id}/${email}/`, payload)
-export const deleteTop5ListById = (id, email) => api.delete(`/top5list/${id}/${email}/`)
-export const getTop5ListById = (id, email) => api.get(`/top5list/${id}/${email}/`)
+export const getTop5Lists = (query) => api.get(`/top5lists/`, {params: query})
+export const getUserTop5Lists = (query) => api.get(`/usertop5lists/`, {params: query})
+export const updateTop5ListById = (id, payload) => api.put(`/top5list/${id}/`, payload)
+export const deleteTop5ListById = (id, user) => api.delete(`/top5list/${id}/${user}/`)
+export const getTop5ListById = (id) => api.get(`/top5list/${id}/`)
+export const userUpdateTop5ListById = (id, payload, user) => api.put(`/top5list/${id}/${user}`, payload)
+export const publishTop5ListById = (id, payload, user) => api.put(`/publishtop5list/${id}/${user}`, payload)
+
 
 export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const registerUser = (payload) => api.post(`/register/`, payload)
 export const loginUser = (payload) => api.get(`/login/`, {params: payload})
 export const logoutUser = () => api.get(`/logout/`)
+export const loginGuest = () => api.get(`/loginguest/`)
 
 const apis = {
     createTop5List,
-    getAllTop5Lists,
-    getTop5ListPairs,
+    getTop5Lists,
+    getUserTop5Lists,
     updateTop5ListById,
     deleteTop5ListById,
     getTop5ListById,
+    userUpdateTop5ListById,
+    publishTop5ListById,
 
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    loginGuest
 }
 
 export default apis
