@@ -74,15 +74,19 @@ function AuthContextProvider(props) {
                     user: response.data.user
                 }
             });
+            store.changePageToHome();
             history.push("/list");
-            //store.loadIdNamePairs();
         })
-        .catch(({response}) => authReducer({
-            type: AuthActionType.SET_ERROR_MESSAGE,
-            payload:{
-                message: response.data.errorMessage
+        .catch(({response}) => {
+            if(response){ 
+                authReducer({
+                    type: AuthActionType.SET_ERROR_MESSAGE,
+                    payload:{
+                        message: response.data.errorMessage
+                    }
+                })
             }
-        }));      
+        });      
     }
 
     auth.loginUser = async function(userData, store){
@@ -93,15 +97,19 @@ function AuthContextProvider(props) {
                     user: response.data.user
                 }
             });
+            store.changePageToHome();
             history.push("/list");
-            //store.loadIdNamePairs();
         })
-        .catch(({response}) => authReducer({
-            type: AuthActionType.SET_ERROR_MESSAGE,
-            payload:{
-                message: response.data.errorMessage
+        .catch(({response}) => {
+            if(response){ 
+                authReducer({
+                    type: AuthActionType.SET_ERROR_MESSAGE,
+                    payload:{
+                        message: response.data.errorMessage
+                    }
+                })
             }
-        }));
+        });      
         
     }
 
@@ -115,7 +123,7 @@ function AuthContextProvider(props) {
                     loggedIn: false
                 }
             });
-            //store.reset(); 
+            store.reset(); 
             history.push("/");
         }
     }
@@ -129,7 +137,7 @@ function AuthContextProvider(props) {
                     user: response.data.user
                 }
             });
-            //store.loadIdNamePairs();
+            store.changePageToCommunityLists(); 
             history.push("/list");
         }
     }

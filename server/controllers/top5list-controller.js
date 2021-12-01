@@ -199,7 +199,9 @@ getTop5Lists = async (req, res) => {
                         views: list.views,
                         likes: list.likes,
                         dislikes: list.dislikes,
-                        publishDate: date
+                        publishDate: date,
+                        items: list.items,
+                        comments: list.comments
                     };
                     listData.push(data);   
                 }
@@ -236,7 +238,9 @@ getTop5Lists = async (req, res) => {
                         views: list.views,
                         likes: list.likes,
                         dislikes: list.dislikes,
-                        publishDate: date
+                        publishDate: date,
+                        items: list.items,
+                        comments: list.comments
                     };
                     listData.push(data);   
                 }
@@ -277,7 +281,10 @@ getUserTop5Lists = async (req, res) => {
                             views: list.views,
                             likes: list.likes,
                             dislikes: list.dislikes,
-                            publishDate: date
+                            publishDate: date,
+                            items: list.items,
+                            comments: list.comments,
+                            votes: list.votes
                         };
                         listData.push(data);
                     }
@@ -301,7 +308,9 @@ getUserTop5Lists = async (req, res) => {
                             likes: list.likes,
                             dislikes: list.dislikes,
                             publishDate: date,
-                            published: list.published
+                            published: list.published,
+                            items: list.items,
+                            comments: list.comments
                         };
                         listData.push(data);
                     }

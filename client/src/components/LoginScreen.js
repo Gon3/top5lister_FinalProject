@@ -29,7 +29,7 @@ export default function LoginScreen() {
         const data = new FormData(event.currentTarget);
 
         auth.loginUser({
-        email: data.get('userName'),
+        userName: data.get('userName'),
         password: data.get('password'),
         }, store);
     };
