@@ -443,7 +443,7 @@ async function updateCommunityLists(name){
             communityList.votes = votes; 
             communityList.save();  
         } else {
-            const top5List = new Top5List({name: name, items: items, userName: "Community", views: [],
+            const top5List = new Top5List({name: name, items: items, userName: "Community", views: 0,
             likes:[], dislikes:[], comments:[], publishDate: new Date(), published: true, votes: votes}); 
             top5List.save(); 
         }

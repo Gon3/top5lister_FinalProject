@@ -3,7 +3,6 @@ import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -15,7 +14,6 @@ import Groups from '@mui/icons-material/Groups';
 import Person from '@mui/icons-material/Person';
 import Sort from '@mui/icons-material/Sort'; 
 import Functions from '@mui/icons-material/Functions';
-import { AppBar } from '@mui/material';
 
 export default function MenuToolbar(props) {
     const {store} = useContext(GlobalStoreContext); 
@@ -24,7 +22,6 @@ export default function MenuToolbar(props) {
     const [text, setText] = useState("");
     const [sort, setSort] = useState(""); 
     const isMenuOpen = Boolean(anchorEl);
-    //const {setViewCallback} = props; 
     
     const menuId = "sort-list-menu"
 
@@ -50,44 +47,32 @@ export default function MenuToolbar(props) {
 
     const handleSortClick = (event) => {
         handleMenuClose(); 
-        console.log(event.target.innerText);
         setSort(event.target.innerText); 
         store.changeSort(event.target.innerText); 
-    }
-
-    const isMenuItemDisabled = (menuItemText) => {
-        return store.sorting === menuItemText;
     }
     
     const handleHome = () =>{
         store.changePageToHome();
         setText("");
         setSort("");
-        //setViewCallback(store.currentPage); 
     }
 
     const handleAllLists = () =>{
         store.changePageToAllLists();
         setText("");
         setSort("");
-        console.log(store.currentPage);
-        //setViewCallback(store.currentPage);
     }
 
     const handleUserLists = () =>{
         store.changePageToUserLists(); 
         setText("");
         setSort("");
-        console.log(store.currentPage);
-        //setViewCallback(store.currentPage);
     }
 
     const handleCommunity = () =>{
         store.changePageToCommunityLists(); 
         setText("");
         setSort("");
-        console.log(store.currentPage);
-        //setViewCallback(store.currentPage); 
     }
 
     return (
@@ -98,7 +83,7 @@ export default function MenuToolbar(props) {
                     <IconButton  
                         edge="end"
                         aria-label="home-button"
-                        disabled={!auth.loggedIn || auth.user.isGuest}
+                        disabled={auth.user?.isGuest}
                         onClick={handleHome}>
                             <Home style={{ fontSize: 60 }} />
                     </IconButton>

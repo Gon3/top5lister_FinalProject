@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import api from '../api'
+import { GlobalStoreContext } from "../store";
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);
@@ -19,10 +20,6 @@ function AuthContextProvider(props) {
         errorMessage: null
     });
     const history = useHistory();
-
-    useEffect(() => {
-        auth.getLoggedIn();
-    }, []);
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -53,9 +50,14 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.getLoggedIn = async function () {
+    auth.getLoggedIn = async function (store) {
         const response = await api.getLoggedIn();
         if (response.status === 200) {
+            if(response.data.user.isGuest){
+                store.changePageToCommunityLists(); 
+            } else {
+                store.changePageToHome(response.data.user); 
+            }
             authReducer({
                 type: AuthActionType.GET_LOGGED_IN,
                 payload: {

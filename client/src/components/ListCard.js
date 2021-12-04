@@ -1,117 +1,147 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
-import TextField from '@mui/material/TextField';
+import AuthContext from '../auth';
+import { Typography } from '@mui/material';
+import Stack from '@mui/material/Stack'; 
 import Box from '@mui/material/Box';
+import { Grid } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import LikeIcon from '@mui/icons-material/ThumbUp';
+import DislikeIcon from '@mui/icons-material/ThumbDown';
+import Collapse from '@mui/material/Collapse';
+import ListDropDown from './ListDropDown.js'; 
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
-/*
-    This is a card in our list of top 5 lists. It lets select
-    a list for editing and it has controls for changing its 
-    name or deleting it.
-    
-    @author McKilla Gorilla
-*/
-function ListCard(props) {
+
+export default function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
-    const [editActive, setEditActive] = useState(false);
-    const [text, setText] = useState("");
-    const { idNamePair, errorCallback } = props;
+    const {auth} = useContext(AuthContext); 
+    const [open, setOpen] = useState(false); 
+    const { list } = props;
+    const [likes, setLikes] = useState(list.likes.length); 
+    const [dislikes, setDislikes] = useState(list.dislikes.length); 
+    const [views, setViews] = useState(list.views); 
+    const [isLiked, setIsLiked] = useState(list.likes.includes(auth.user?.userName));
+    const [isDisliked, setIsDisliked] = useState(list.dislikes.includes(auth.user?.userName));
 
-    function handleLoadList(event, id) {
-        if (!event.target.disabled) {
-            // CHANGE THE CURRENT LIST
-            store.setCurrentList(id, errorCallback);
+    useEffect(() => {
+        setLikes(list.likes.length);
+        setDislikes(list.dislikes.length);
+        setIsLiked(list.likes.includes(auth.user?.userName));
+        setIsDisliked(list.dislikes.includes(auth.user?.userName));
+        setViews(list.views);
+        setOpen(false);
+    },[store.sorting]);
+
+    const handleListOpen = () => {
+        if(open){
+            store.loadTop5Lists();
+        } else {
+            if(!auth.user?.isGuest){
+                store.updateViews(list._id, (view) => setViews(view)); 
+            }
         }
+        setOpen(!open);
     }
 
-    function handleToggleEdit(event) {
+    const handleLikeClick = (event) => {
         event.stopPropagation();
-        toggleEdit();
+        store.updateLikes(list._id, (like_arr, dislike_arr) => {
+            setLikes(like_arr.length);
+            setDislikes(dislike_arr.length);
+            setIsLiked(like_arr.includes(auth.user?.userName));
+            setIsDisliked(dislike_arr.includes(auth.user?.userName));
+        });
     }
 
-    function toggleEdit() {
-        let newActive = !editActive;
-        if (newActive) {
-            store.setIsListNameEditActive();
-        }
-        else{
-            store.resetIsListNameEditActive(); 
-        }
-        setEditActive(newActive);
-    }
-
-    async function handleDeleteList(event, id) {
+    const handleDislikeClick = (event) => {
         event.stopPropagation();
-        store.markListForDeletion(id, errorCallback);
+        store.updateDislikes(list._id, (like_arr, dislike_arr) => {
+            setLikes(like_arr.length);
+            setDislikes(dislike_arr.length);
+            setIsLiked(like_arr.includes(auth.user?.userName));
+            setIsDisliked(dislike_arr.includes(auth.user?.userName));
+        });
     }
-
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text, errorCallback);
-            toggleEdit();
-        }
-    }
-    function handleUpdateText(event) {
-        setText(event.target.value);
-    }
-
-    let cardElement =
+    
+    return (
         <ListItem
-            id={idNamePair._id}
-            key={idNamePair._id}
-            sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+            id={list._id}
+            key={list._id}
+            sx={{ marginTop: '15px', display: 'flex', p: 1, bgcolor:"#BDBDFF", borderRadius:3}}
             button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }
-            }
+            disableRipple={open}
+            onClick={handleListOpen}
             style={{
-                fontSize: '48pt',
                 width: '100%'
             }}
         >
-                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-                <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'
-                                disabled={store.isListNameEditActive}>
-                        <EditIcon style={{fontSize:'48pt'}} />
-                    </IconButton>
+            <Grid container spacing={2}>
+                <Grid item xs={9.5}>
+                <Box sx={{ p: 1, display: 'flex', flexGrow: 1,  flexDirection: 'column',
+                    alignText: 'left'}}>
+                    <Typography variant="h5" component="div" color="black" fontWeight="bold">
+                        {list.name} 
+                    </Typography>
+                    <br></br>
+                    {('userName' in list) && 
+                        <Typography variant="subtitle1" component="div" color="black" >
+                            {"By: "} 
+                            <Typography variant="subtitle1" component="div" color="blue" display="inline">
+                                <u>{list.userName}</u>
+                            </Typography>
+                        </Typography>
+                    }
+                    <br></br>
+                    <Typography variant="subtitle1" component="div" color="black">
+                        {!('userName' in list) ? "Uploaded: " : "Published: "}
+                        <Typography variant="subtitle1" component="div" color="green" display="inline">
+                            {list.publishDate}
+                        </Typography>
+                    </Typography>
                 </Box>
-                <Box sx={{ p: 1 }}>
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete' disabled={store.isListNameEditActive}>
-                        <DeleteIcon style={{fontSize:'48pt'}} />
-                    </IconButton>
+                </Grid>
+                <Grid item xs={2.5}>
+                <Box  sx={{ p: 1, display: 'flex', flexGrow: 1,  flexDirection: 'column',
+                    alignItems: 'left'}}>
+                    <Stack direction="row" spacing={9}>
+                        <IconButton
+                            edge="end"
+                            aria-label="like-button"
+                            disabled={auth.user?.isGuest}
+                            onClick={handleLikeClick}>
+                            <LikeIcon sx={{fontSize:30, p:1, color:`${isLiked ? "blue" : "grey"}`}}/>
+                            {likes} 
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            aria-label="dislike-button"
+                            disabled={auth.user?.isGuest}
+                            onClick={handleDislikeClick}>
+                            <DislikeIcon sx={{fontSize:30, p:1, color:`${isDisliked ? "blue" : "grey"}`}}/> 
+                            {dislikes}
+                        </IconButton>
+                    </Stack>
+                    <Stack direction="row" spacing={2}>
+                        <Typography variant="subtitle1" component="div" color="black" sx={{width:200}}>
+                                {"Views: "} 
+                                <Typography variant="subtitle1" component="div" textDecoration="underline" color="red" display="inline">
+                                    {views}
+                                </Typography>
+                        </Typography>
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                    </Stack>
                 </Box>
+                </Grid>
+                <Grid item xs={12}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <ListDropDown list={list}/> 
+                    </Collapse>
+                </Grid>
+            </Grid>
         </ListItem>
-
-    if (editActive) {
-        cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Top 5 List Name"
-                name="name"
-                autoComplete="Top 5 List Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
-                autoFocus
-            />
-    }
-    return (
-        cardElement
     );
 }
 
-export default ListCard;

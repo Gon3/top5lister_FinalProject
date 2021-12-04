@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'   
+import { useContext, useState, useEffect } from 'react'   
 import { GlobalStoreContext } from '../store'
 import AuthContext from '../auth'
 import HomeView from './HomeView'
@@ -13,27 +13,16 @@ export default function ListViewer() {
     //use currentPage store
     //const [view, setView] = useState(auth.user.isGuest ? "community" : "home"); 
 
+    useEffect(() => {
+        
+        auth.getLoggedIn(store); 
+        
+    }, []); 
+
     let viewElement = <HomeView />; 
     if(store.currentPage !== "home"){
         viewElement = <OtherListView />; 
     }
-    /* switch(store.currentPage){
-        case "home" :{
-            viewElement = <HomeView />
-            break; 
-        }
-        case "allLists" : {
-            viewElement = <OtherListView type="all" />
-            break; 
-        }
-        case "userLists" : {
-            viewElement = <OtherListView type="users" /> 
-            break; 
-        }
-        case "community" : {
-            viewElement = <OtherListView type="community" />
-        }
-    }; */
     
     return (
         <Container component="main" maxWidth="xs">

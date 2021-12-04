@@ -114,11 +114,9 @@ body {
   top: 90%;
   width: 100%;
   height: 10%;
-  background-color: lightsalmon;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36pt;
 }
 
 #list-selector-heading {
@@ -140,9 +138,9 @@ body {
 }
 
 #list-selector-list {
-  position: absolute;
+  position: relative;
   left: 0%;
-  top: 10%;
+  top: 20%;
   width: 100%;
   height: 90%;
   display: flex;

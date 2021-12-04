@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import GlobalStoreContext from '../store';
 import AuthContext from '../auth';
 import Copyright from './Copyright';
@@ -24,6 +24,10 @@ export default function LoginScreen() {
     const { store } = useContext(GlobalStoreContext)
     const theme = createTheme();
     
+    useEffect(() => {
+        auth.getLoggedIn(store); 
+    }, []); 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

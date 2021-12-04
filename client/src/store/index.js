@@ -188,7 +188,7 @@ function GlobalStoreContextProvider(props) {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
             userName: auth.user.userName,
-            views: [],
+            views: 0,
             likes: [],
             dislikes: [],
             comments: [],
@@ -218,9 +218,8 @@ function GlobalStoreContextProvider(props) {
     store.loadTop5Lists = async function () {
         switch(store.currentPage){
             case "home" : {
-                console.log("in home");
                 let query = {
-                    userName: auth.user.userName, 
+                    user: auth.user.userName, 
                     name: store.searchName
                 }
                 const response = await api.getUserTop5Lists(query);
@@ -257,7 +256,7 @@ function GlobalStoreContextProvider(props) {
 
             case "userLists" : {
                 let query = {
-                    userName: store.searchName
+                    user: store.searchName
                 }
                 const response = await api.getTop5Lists(query);
                 if(response.data.success){
@@ -275,7 +274,7 @@ function GlobalStoreContextProvider(props) {
 
             case "community" : {
                 let query = {
-                    userName: "Community",
+                    user: "Community",
                     name: store.searchName
                 }
                 const response = await api.getUserTop5Lists(query);
@@ -297,10 +296,9 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.changePageToHome = async function () {
-        console.log("home");
+    store.changePageToHome = async function (user) {
         let query = {
-            userName: auth.user.userName, 
+            user: user === null ? auth.user.userName : user, 
             name: ""
         }
         const response = await api.getUserTop5Lists(query);
@@ -316,12 +314,9 @@ function GlobalStoreContextProvider(props) {
         } else {
             console.log("API FAILED TO GET THE LIST PAIRS");
         }
-        console.log(store.currentPage);
-        //store.loadTop5Lists(); 
     }
 
     store.changePageToAllLists = function () {
-        console.log("allLists");
         storeReducer({
             type: GlobalStoreActionType.SET_CURRENT_PAGE,
             payload: {
@@ -329,12 +324,9 @@ function GlobalStoreContextProvider(props) {
                 top5lists: []
             }
         });
-        console.log(store.currentPage);
-        //store.loadTop5Lists(); 
     }
 
     store.changePageToUserLists = function () {
-        console.log("userLists");
         storeReducer({
             type: GlobalStoreActionType.SET_CURRENT_PAGE,
             payload: {
@@ -342,12 +334,9 @@ function GlobalStoreContextProvider(props) {
                 top5lists: []
             }
         });
-        console.log(store.currentPage);
-        //store.loadTop5Lists(); 
     }
 
     store.changePageToCommunityLists = function () {
-        console.log("community");
         storeReducer({
             type: GlobalStoreActionType.SET_CURRENT_PAGE,
             payload: {
@@ -355,16 +344,13 @@ function GlobalStoreContextProvider(props) {
                 top5lists: []
             }
         });
-        console.log(store.currentPage);
-        //store.loadTop5Lists(); 
     }
 
     store.changeSearchName = async function (search) {
         switch(store.currentPage){
             case "home" : {
-                console.log("in home");
                 let query = {
-                    userName: auth.user.userName, 
+                    user: auth.user.userName, 
                     name: search
                 }
                 const response = await api.getUserTop5Lists(query);
@@ -374,8 +360,8 @@ function GlobalStoreContextProvider(props) {
                     storeReducer({
                         type: GlobalStoreActionType.SET_SEARCH_NAME,
                         payload: {
-                            newSearch: search,
-                            top5lists: sortedLists
+                            top5lists: sortedLists,
+                            newSearch: search
                         }
                     });
                 } else {
@@ -390,13 +376,14 @@ function GlobalStoreContextProvider(props) {
                 }
                 const response = await api.getTop5Lists(query);
                 if(response.data.success){
+                    console.log("success" + response); 
                     let top5lists = response.data.top5lists;
                     let sortedLists = store.sortLists(top5lists, store.sorting); 
                     storeReducer({
                         type: GlobalStoreActionType.SET_SEARCH_NAME,
                         payload: {
-                            newSearch: search,
-                            top5lists: sortedLists
+                            top5lists: sortedLists,
+                            newSearch: search
                         }
                     });
                 } else {
@@ -407,7 +394,7 @@ function GlobalStoreContextProvider(props) {
 
             case "userLists" : {
                 let query = {
-                    userName: search
+                    user: search
                 }
                 const response = await api.getTop5Lists(query);
                 if(response.data.success){
@@ -416,8 +403,8 @@ function GlobalStoreContextProvider(props) {
                     storeReducer({
                         type: GlobalStoreActionType.SET_SEARCH_NAME,
                         payload: {
-                            newSearch: search,
-                            top5lists: sortedLists
+                            top5lists: sortedLists,
+                            newSearch: search
                         }
                     });
                 } else {
@@ -428,7 +415,7 @@ function GlobalStoreContextProvider(props) {
 
             case "community" : {
                 let query = {
-                    userName: "Community",
+                    user: "Community",
                     name: search
                 }
                 const response = await api.getUserTop5Lists(query);
@@ -438,8 +425,8 @@ function GlobalStoreContextProvider(props) {
                     storeReducer({
                         type: GlobalStoreActionType.SET_SEARCH_NAME,
                         payload: {
-                            newSearch: search,
-                            top5lists: sortedLists
+                            top5lists: sortedLists,
+                            newSearch: search
                         }
                     });
                 } else {
@@ -454,7 +441,6 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.changeSort = function (newSort) {
-        console.log(newSort);
         let sortedLists = store.sortLists(store.top5Lists, newSort);
 
         storeReducer({
@@ -464,8 +450,6 @@ function GlobalStoreContextProvider(props) {
                 top5Lists: sortedLists
             }
         });
-        console.log(store.sorting);
-        //store.loadTop5Lists();
     }
 
     store.sortLists = function (lists, sort) {
@@ -514,19 +498,19 @@ function GlobalStoreContextProvider(props) {
             }
             case "Views" : {
                 lists.sort((list1, list2) => {
-                    return list2.views.length() - list1.views.length(); 
+                    return list2.views - list1.views; 
                 });
                 return lists; 
             }
             case "Likes" : {
                 lists.sort((list1, list2) => {
-                    return list2.likes.length() - list1.likes.length(); 
+                    return list2.likes.length - list1.likes.length; 
                 });
                 return lists; 
             }
             case "Dislikes" : {
                 lists.sort((list1, list2) => {
-                    return list2.dislikes.length() - list1.dislikes.length(); 
+                    return list2.dislikes.length - list1.dislikes.length; 
                 });
                 return lists; 
             }
@@ -597,10 +581,9 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
-        //store.loadTop5Lists();
     }
 
-    store.updateLikes = async function (id) {
+    store.updateLikes = async function (id, setLikeDislikeCallback) {
         await api.getTop5ListById(id).then( response => {
             let top5List = response.data.top5List;
             if(top5List.likes.includes(auth.user.userName)){
@@ -622,14 +605,15 @@ function GlobalStoreContextProvider(props) {
                 };
                 response = await api.updateTop5ListById(top5List._id, payload); 
                 if(response.data.success){
-                    //store.loadTop5Lists(); 
+                    setLikeDislikeCallback(top5List.likes, top5List.dislikes);
+                    store.loadTop5Lists(); 
                 }
             }
             updatingList(top5List)
         });
     }
 
-    store.updateDislikes = async function (id) {
+    store.updateDislikes = async function (id, setLikeDislikeCallback) {
         await api.getTop5ListById(id).then( response => {
             let top5List = response.data.top5List;
             if(top5List.dislikes.includes(auth.user.userName)){
@@ -651,35 +635,32 @@ function GlobalStoreContextProvider(props) {
                 };
                 response = await api.updateTop5ListById(top5List._id, payload); 
                 if(response.data.success){
-                    //store.loadTop5Lists(); 
+                    setLikeDislikeCallback(top5List.likes, top5List.dislikes);
+                    store.loadTop5Lists(); 
                 }
             }
             updatingList(top5List)
         });
     }
 
-    store.updateViews = async function (id) {
+    store.updateViews = async function (id, setViewCallback) {
         await api.getTop5ListById(id).then( response => {
             let top5List = response.data.top5List;
-            if(!top5List.views.includes(auth.user.userName)){
-                top5List.views.push(auth.user.userName); 
-                async function updatingList(top5List){
-                    let payload = {
-                        likes: top5List.likes,
-                        dislikes: top5List.dislikes,
-                        comments: top5List.comments,
-                        views: top5List.views
-                    };
-                    response = await api.updateTop5ListById(top5List._id, payload); 
-                    if(response.data.success){
-                        //store.loadTop5Lists(); 
-                    }
+            top5List.views++; 
+            async function updatingList(top5List){
+                let payload = {
+                    likes: top5List.likes,
+                    dislikes: top5List.dislikes,
+                    comments: top5List.comments,
+                    views: top5List.views
+                };
+                response = await api.updateTop5ListById(top5List._id, payload); 
+                if(response.data.success){
+                    setViewCallback(top5List.views); 
+                    store.loadTop5Lists();
                 }
-                updatingList(top5List);
             }
-            else{
-                return; 
-            }
+            updatingList(top5List);
         });
     }
 
@@ -703,7 +684,6 @@ function GlobalStoreContextProvider(props) {
                 };
                 response = await api.updateTop5ListById(top5List._id, payload); 
                 if(response.data.success){
-                    //store.loadTop5Lists(); 
                 }
             }
             updatingList(top5List);

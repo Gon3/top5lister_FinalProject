@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AuthContext from '../auth'
 import Copyright from './Copyright'
 import Avatar from '@mui/material/Avatar';
@@ -17,6 +17,10 @@ import ErrorModal from './ErrorModal';
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+
+    useEffect(() => {
+        auth.getLoggedIn(store); 
+    }, []); 
 
     const handleSubmit = (event) => {
         event.preventDefault();
