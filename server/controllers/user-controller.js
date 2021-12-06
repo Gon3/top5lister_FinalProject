@@ -80,24 +80,18 @@ registerUser = async (req, res) => {
         const newUser = new User({
             firstName, lastName, userName, email, passwordHash
         });
-        const savedUser = await newUser.save();
+            await newUser.save().then(() => {
+                return res.status(200).json({
+                    success: true,
+                    message: 'User has been registered!'
+                })
+            }).catch(() => {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Failed to register user'
+                })
+            });
 
-        // LOGIN THE USER
-        const token = auth.signToken(savedUser);
-
-        await res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none"
-        }).status(200).json({
-            success: true,
-            user: {
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,
-                userName: savedUser.userName,
-                isGuest: false
-            }
-        }).send();
     } catch (err) {
         console.error(err);
         res.status(500).send();

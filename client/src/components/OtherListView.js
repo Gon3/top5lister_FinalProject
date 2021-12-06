@@ -1,6 +1,5 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
-import AuthContext from '../auth'
 import { Box, List, Typography } from '@mui/material'
 import  ListCard from './ListCard'
 

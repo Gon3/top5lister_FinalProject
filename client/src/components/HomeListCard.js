@@ -37,10 +37,10 @@ export default function ListCard(props) {
     },[store.sorting]);
 
     const handleListOpen = () => {
-        if(open){
+        if(open && list.published){
             store.loadTop5Lists();
         } else {
-            if(!auth.user?.isGuest){
+            if(list.published){
                 store.updateViews(list._id, (view) => setViews(view)); 
             }
         }
@@ -68,14 +68,17 @@ export default function ListCard(props) {
     }
 
     const handleDelete = (event) => {
-
+        event.stopPropagation();
+        store.markListForDeletion(list._id);
     }
 
     const handleEdit = (event) => {
-
+        event.stopPropagation();
+        setOpen(false);
+        store.setCurrentList(list._id)
     }
 
-    let color = "##FAE69D";
+    let color = "#FAE69D";
     if(list.published){
         color = "#BDBDFF"; 
     }
@@ -93,7 +96,7 @@ export default function ListCard(props) {
             }}
         >
             <Grid container spacing={2}>
-                <Grid item xs={9.5}>
+                <Grid item xs={9}>
                 <Box sx={{ p: 1, display: 'flex', flexGrow: 1,  flexDirection: 'column',
                     alignText: 'left'}}>
                     <Typography variant="h5" component="div" color="black" fontWeight="bold">
@@ -114,21 +117,23 @@ export default function ListCard(props) {
                             {list.publishDate}
                         </Typography>
                     </Typography> :
-                    <Link variant="subtitle" onClick={handleEdit} sx={{color:"red"}}>
-                       Edit
-                    </Link>
+                    <Box>
+                        <Link variant="subtitle1" onClick={handleEdit} sx={{color:"red"}}>
+                            Edit
+                        </Link>
+                    </Box>
                     }
                 </Box>
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item xs={3}>
                 <Box  sx={{ p: 1, display: 'flex', flexGrow: 1,  flexDirection: 'column',
                     alignItems: 'left'}}>
-                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Stack direction="row" spacing={9}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', p:1}}>
+                        <Stack direction="row" spacing={9} mr={6}>
                             <IconButton
                                 edge="end"
                                 aria-label="like-button"
-                                disabled={!list.Published}
+                                disabled={!list.published}
                                 onClick={handleLikeClick}>
                                 <LikeIcon sx={{fontSize:30, p:1, color:`${isLiked ? "blue" : "grey"}`}}/>
                                 {likes} 
@@ -146,11 +151,11 @@ export default function ListCard(props) {
                                 edge="end"
                                 aria-label="delete-button"
                                 onClick={handleDelete}>
-                                <DeleteIcon sx={{fontSize:30, color:"grey"}}
+                                <DeleteIcon sx={{fontSize:30, color:"grey"}} />
                         </IconButton>
                     </Box>
                     <Stack direction="row" spacing={2}>
-                        <Typography variant="subtitle1" component="div" color="black" sx={{width:200}}>
+                        <Typography variant="subtitle1" component="div" color="black" sx={{width:260}}>
                                 {"Views: "} 
                                 <Typography variant="subtitle1" component="div" textDecoration="underline" color="red" display="inline">
                                     {views}

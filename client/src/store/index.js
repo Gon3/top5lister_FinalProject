@@ -296,9 +296,9 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.changePageToHome = async function (user) {
+    store.changePageToHome = async function () {
         let query = {
-            user: user === null ? auth.user.userName : user, 
+            user: auth.user?.userName, 
             name: ""
         }
         const response = await api.getUserTop5Lists(query);
@@ -454,7 +454,7 @@ function GlobalStoreContextProvider(props) {
 
     store.sortLists = function (lists, sort) {
         switch(sort){
-            case "Publish Date (Newest)" : {
+            case "Publish Date (Oldest)" : {
                 lists.sort((list1, list2) => {
                     if (list1.published && list2.published){
                         let d1 = new Date(list1.publishDate);
@@ -475,7 +475,7 @@ function GlobalStoreContextProvider(props) {
                 });
                 return lists; 
             }
-            case "Publish Date (Oldest)" : {
+            case "Publish Date (Newest)" : {
                 lists.sort((list1, list2) => {
                     if (list1.published && list2.published){
                         let d1 = new Date(list1.publishDate);
@@ -536,10 +536,8 @@ function GlobalStoreContextProvider(props) {
 
     const deleteList = async function (listToDelete) {
         await api.deleteTop5ListById(listToDelete._id, auth.user.userName).then(response => {
-            if (response.data.success) {
-                store.loadIdNamePairs();
-            }
-        }); 
+            store.loadTop5Lists();
+        }).catch(error => {console.log(error); store.loadTop5Lists();}); 
     }
 
     store.deleteMarkedList = function () {
@@ -720,6 +718,49 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.CLEAR_STORE,
             payload: null
         });
+    }
+
+    store.checkIsPublishable = function (title, items, setPublishCallback){
+        if(!title){
+            console.log("reject " + title); 
+            setPublishCallback(false); 
+            return; 
+        }
+
+        let filteredItems = items.filter((item) => !(/^\s*$/.test(item)));
+        console.log(filteredItems); 
+        let nonDuplicateItems = new Set(filteredItems); 
+        console.log(nonDuplicateItems); 
+        if(nonDuplicateItems.size !== 5){
+            console.log("reject " + nonDuplicateItems); 
+            setPublishCallback(false); 
+            return; 
+        }
+        
+        async function checkTitle(name){
+            let query = {
+            user: auth.user.userName
+            }
+            const response = await api.getTop5Lists(query);
+            if(response.data.success){
+                let top5lists = response.data.top5lists;
+                for(let index in top5lists){
+                    let list = top5lists[index]; 
+                    if(list.name === title){
+                        console.log("reject "+ title); 
+                        setPublishCallback(false);  
+                        return;
+                    }
+                }
+                console.log("accepted"); 
+                setPublishCallback(true); 
+            }
+            else{
+                console.log('failed to check if title valid'); 
+                return; 
+            }
+        } 
+        checkTitle(title); 
     }
 
     return (

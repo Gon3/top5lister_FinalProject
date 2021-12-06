@@ -151,7 +151,7 @@ deleteTop5List = async (req, res) => {
         }
         
         Top5List.findByIdAndDelete(req.params.id, (err, top5list) => {
-            if(top5list.published){ 
+            if(top5list?.published){ 
                 updateCommunityLists(top5list.name);
             }
             return res.status(200).json({ success: true, data: top5list });

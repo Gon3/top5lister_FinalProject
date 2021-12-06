@@ -33,7 +33,7 @@ export default function ListDropDown(props) {
     }
 
     let itemViews = ""; 
-    if(!('userName' in list)){
+    if(!('userName' in list)){ 
         itemViews = 
         <List >
         {list.items.map((item, index) => (
@@ -107,7 +107,7 @@ export default function ListDropDown(props) {
                 </Paper>
             </Grid>
             <Grid item xs={6}>
-                {!list.published ? <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                {list.published || !("published" in list) ? <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Box sx={{height:235, display: "flex", width:640, flexDirection: "column", overflowY: "scroll"}}>
                     {commentItems}
                 </Box>
@@ -126,8 +126,8 @@ export default function ListDropDown(props) {
                 </Box> : 
                 <Typography sx={{ display: "block"}}
                             component="div"
-                            variant="h4">
-                            Comments are disabled; List has not been published yet. 
+                            variant="h3">
+                            Comments are disabled; <br></br>List has not been published yet. 
                 </Typography>
                 }
             </Grid>
