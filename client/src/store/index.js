@@ -763,6 +763,14 @@ function GlobalStoreContextProvider(props) {
         checkTitle(title); 
     }
 
+    store.pingCommunityLists = async function (){
+        await api.generateCommunityLists().then(() => {
+            console.log('MADE COMMUNITY LISTS, SUCCESS!!'); 
+        }).catch(() => {
+            console.log('COMMUNITY LISTS NOT MADE, FAILURE!!'); 
+        }); 
+    }
+
     return (
         <GlobalStoreContext.Provider value={{
             store

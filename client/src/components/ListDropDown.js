@@ -83,14 +83,14 @@ export default function ListDropDown(props) {
                             lineHeight={0.9}
                             color="blue"
                             component="span"
-                            variant="caption"> 
+                            variant="body1"> 
                         <u>{comment.user}</u> <br></br>
                 </Typography>
                 }
                 secondary={
                 <Typography 
                     component="span"
-                    variant="body1"
+                    variant="h6"
                     color="black" >
                         {comment.text}
                 </Typography>
@@ -120,7 +120,7 @@ export default function ListDropDown(props) {
                             value={text}
                             margin="normal"
                             style = {{position:'relative', left:-15, width: "95%"}}
-                            inputProps={{style: {fontSize: 16}}}
+                            inputProps={{style: {fontSize: 18}}}
                             disabled={auth.user?.isGuest}
                             fullWidth/>
                 </Box> : 

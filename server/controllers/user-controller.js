@@ -8,10 +8,10 @@ getLoggedIn = async (req, res) => {
         return res.status(200).json({
             loggedIn: true,
             user: {
-                firstName: loggedInUser.firstName,
-                lastName: loggedInUser.lastName,
-                userName: loggedInUser.userName,
-                isGuest: (loggedInUser.userName === "Guest")
+                firstName: loggedInUser?.firstName,
+                lastName: loggedInUser?.lastName,
+                userName: loggedInUser?.userName,
+                isGuest: (loggedInUser?.userName === "Guest")
             }
         }).send();
     })

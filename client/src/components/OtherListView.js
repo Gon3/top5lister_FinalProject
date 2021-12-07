@@ -1,11 +1,15 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Box, List, Typography } from '@mui/material'
 import  ListCard from './ListCard'
 
 
 export default function OtherListView() {
-    const { store } = useContext(GlobalStoreContext)
+    const { store } = useContext(GlobalStoreContext);
+
+    useEffect( () => {
+        store.pingCommunityLists(); 
+    }, []); 
 
     let statusText = `${store.currentPage === "allLists" ? (store.searchName ? store.searchName : "All") :
                             (store.searchName ? store.searchName : "All Users")} Lists`; 

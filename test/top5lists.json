@@ -1,0 +1,726 @@
+[{
+  "_id": {
+    "$oid": "61aecf6ba6324f1adc6447cc"
+  },
+  "items": [
+    "Chicken",
+    "Salmon",
+    "Cow",
+    "Goat",
+    "Pig"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Animals to Eat",
+  "userName": "noku",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:05:15.439Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:05:15.552Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:05:15.552Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aecf90a6324f1adc6447ce"
+  },
+  "items": [
+    "Salmon",
+    "Cow",
+    "Chicken",
+    "Fish",
+    "Horse"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Animals to Eat",
+  "userName": "H8TRSHADES",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:05:52.985Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:05:52.994Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:05:52.994Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aecfb2a6324f1adc6447d0"
+  },
+  "items": [
+    "Fish",
+    "Chicken",
+    "Cow",
+    "Goat",
+    "Shrimp"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Animals to Eat",
+  "userName": "hanamohideen",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:06:26.379Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:06:26.387Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:06:26.387Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aecfcea6324f1adc6447d2"
+  },
+  "items": [
+    "Duck",
+    "Pig",
+    "Lamb",
+    "Cow",
+    "Chicken"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Animals to Eat",
+  "userName": "gc12345",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:06:54.247Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:06:54.257Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:06:54.257Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aecff2a6324f1adc6447d4"
+  },
+  "items": [
+    "Cow",
+    "Chicken",
+    "Pig",
+    "Salmon",
+    "Shrimp"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Animals to Eat",
+  "userName": "huyibo",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:07:30.030Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:07:30.037Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:07:30.037Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed016a6324f1adc6447d6"
+  },
+  "items": [
+    "Tennis",
+    "Golf",
+    "Bowling",
+    "Boxing",
+    "Baseball"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Wii Sports",
+  "userName": "noku",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:08:06.012Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:08:06.020Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:08:06.020Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed024a6324f1adc6447d8"
+  },
+  "items": [
+    "Bowling",
+    "Tennis",
+    "Boxing",
+    "Baseball",
+    "Golf"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Wii Sports",
+  "userName": "H8TRSHADES",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:08:20.636Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:08:20.646Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:08:20.646Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed034a6324f1adc6447da"
+  },
+  "items": [
+    "Bowling",
+    "Golf",
+    "Tennis",
+    "Boxing",
+    "Baseball"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Wii Sports",
+  "userName": "hanamohideen",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:08:36.625Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:08:36.634Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:08:36.634Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed042a6324f1adc6447dc"
+  },
+  "items": [
+    "Golf",
+    "Bowling",
+    "Tennis",
+    "Baseball",
+    "Boxing"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Wii Sports",
+  "userName": "huyibo",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:08:50.866Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:08:50.876Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:08:50.876Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed052a6324f1adc6447de"
+  },
+  "items": [
+    "Tennis",
+    "Boxing",
+    "Bowling",
+    "Golf",
+    "Baseball"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Wii Sports",
+  "userName": "gc12345",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:09:06.101Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:09:06.111Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:09:06.111Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed06aa6324f1adc6447e0"
+  },
+  "items": [
+    "Bungou Stray Dogs",
+    "Baccano",
+    "Hunter X Hunter",
+    "Kaguya-sama: Love is War",
+    "A Certain Scientific Railgun"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Anime",
+  "userName": "noku",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:09:30.077Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:09:30.086Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:09:30.086Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed098a6324f1adc6447e2"
+  },
+  "items": [
+    "Hunter X Hunter",
+    "One Piece",
+    "Naruto",
+    "Baccano",
+    "Bungou Stray Dogs"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Anime",
+  "userName": "huyibo",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:10:16.864Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:10:16.880Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:10:16.880Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed0aba6324f1adc6447e4"
+  },
+  "items": [
+    "Hunter X Hunter",
+    "Bungou Stray Dogs",
+    "Attack On Titan",
+    "Naruto",
+    "Non Non Biyori"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Anime",
+  "userName": "hanamohideen",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:10:35.028Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:10:35.037Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:10:35.037Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed0c3a6324f1adc6447e6"
+  },
+  "items": [
+    "Attack On Titan",
+    "Naruto",
+    "Bungou Stray Dogs",
+    "Jojo's Bizarre Adventure",
+    "Jujutsu Kaisen"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Anime",
+  "userName": "gc12345",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:10:59.251Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:10:59.274Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:10:59.274Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed0d2a6324f1adc6447e8"
+  },
+  "items": [
+    "Fullmetal Alchemist Brotherhood",
+    "Kaguya-sama: Love is War",
+    "Dororo",
+    "Hyouka",
+    "Attack on Titan"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Anime",
+  "userName": "H8TRSHADES",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:11:14.839Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:11:14.875Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:11:14.875Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed0efa6324f1adc6447ea"
+  },
+  "items": [
+    "Italy",
+    "Japan",
+    "United Kingdom",
+    "Isreal",
+    "Australia"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Countries to Visit",
+  "userName": "gct12345",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:11:43.103Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:11:43.113Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:11:43.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed0fba6324f1adc6447ec"
+  },
+  "items": [
+    "Spain",
+    "Japan",
+    "Morocco",
+    "Peru",
+    "South Korea"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Countries to Visit",
+  "userName": "hanamohideen",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:11:55.885Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:11:55.893Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:11:55.893Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed107a6324f1adc6447ee"
+  },
+  "items": [
+    "China",
+    "Japan",
+    "South Korea",
+    "Australia",
+    "Indonesia"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Countries to Visit",
+  "userName": "huyibo",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:12:07.964Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:12:07.971Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:12:07.971Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed113a6324f1adc6447f0"
+  },
+  "items": [
+    "Ireland",
+    "Chile",
+    "Japan",
+    "South Korea",
+    "France"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Countries to Visit",
+  "userName": "H8TRSHADES",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:12:19.575Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:12:19.582Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:12:19.582Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed11ea6324f1adc6447f2"
+  },
+  "items": [
+    "United Kingdom",
+    "Ireland",
+    "Japan",
+    "Switzerland",
+    "Colombia"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Countries to Visit",
+  "userName": "noku",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:12:30.610Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:12:30.617Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:12:30.617Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed135a6324f1adc6447f4"
+  },
+  "items": [
+    "Super Smash Bros Ultimate",
+    "Spelunky 2",
+    "Super Mario Galaxy 2",
+    "Legend of Zelda: Wind Waker",
+    "Celeste"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Games",
+  "userName": "noku",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:12:53.072Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:12:53.086Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:12:53.086Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed140a6324f1adc6447f6"
+  },
+  "items": [
+    "Legend of Zelda: Majora's Mask",
+    "Super Smash Bros. Ultimate",
+    "Star Fox 64",
+    "Legend of Zelda: Breath of the Wild",
+    "Resident Evil 4"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Games",
+  "userName": "H8TRSHADES",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:13:04.372Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:13:04.377Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:13:04.377Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed14da6324f1adc6447f8"
+  },
+  "items": [
+    "Legend of Zelda: Ocarina of Time",
+    "Super Smash Bros. Ultimate",
+    "Metal Gear Solid 3",
+    "Minecraft",
+    "Legend of Zelda: Skyward Sword"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Games",
+  "userName": "hanamohideen",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:13:17.829Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:13:17.840Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:13:17.840Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed158a6324f1adc6447fa"
+  },
+  "items": [
+    "Escape From Tarkov",
+    "Genshin Impact",
+    "League of Legends",
+    "Valorant",
+    "Minecraft"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Games",
+  "userName": "huyibo",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:13:28.998Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:13:29.007Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:13:29.007Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61aed16ba6324f1adc6447fc"
+  },
+  "items": [
+    "Earthbound",
+    "Pokemon",
+    "Minecraft",
+    "Super Smash Bros. Ultimate",
+    "Yui-Gi-Oh"
+  ],
+  "likes": [],
+  "dislikes": [],
+  "votes": [],
+  "name": "Games",
+  "userName": "gc12345",
+  "views": 0,
+  "comments": [],
+  "published": true,
+  "publishDate": {
+    "$date": "2021-12-07T03:13:47.450Z"
+  },
+  "createdAt": {
+    "$date": "2021-12-07T03:13:47.459Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-07T03:13:47.459Z"
+  },
+  "__v": 0
+}]

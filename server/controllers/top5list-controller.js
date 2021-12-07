@@ -9,7 +9,13 @@ createTop5List = (req, res) => {
         })
     }
 
-    const top5List = new Top5List(body);
+    let top5List = null;
+    if(body.published){
+        top5List = new Top5List({...body, publishDate: new Date()})
+    }else{
+        top5List = new Top5List(body);
+    }
+    
     console.log("creating top5List: " + JSON.stringify(top5List));
     if (!top5List) {
         return res.status(400).json({ success: false, error: err })
@@ -171,7 +177,7 @@ getTop5ListById = async (req, res) => {
 
 getTop5Lists = async (req, res) => {
     if(req.query.name){
-        await Top5List.find({name: req.query.name, published: true}, (err, top5Lists) => {
+        await Top5List.find({published: true}, (err, top5Lists) => {
             if (err) {
                 return res.status(400).json({ success: false, error: err })
             }
@@ -189,28 +195,30 @@ getTop5Lists = async (req, res) => {
                     if(list.userName === "Community"){
                         continue; 
                     }
-                    let date = list.publishDate.toDateString();
-                    let len = date.length;
-                    date = date.substring(4, len-5) + "," + date.substring(len-5);
-                    let data = {
-                        _id: list._id,
-                        name: list.name,
-                        userName: list.userName,
-                        views: list.views,
-                        likes: list.likes,
-                        dislikes: list.dislikes,
-                        publishDate: date,
-                        items: list.items,
-                        comments: list.comments
-                    };
-                    listData.push(data);   
+                    if(list.name.toLowerCase() === req.query.name.toLowerCase()){
+                        let date = list.publishDate.toDateString();
+                        let len = date.length;
+                        date = date.substring(4, len-5) + "," + date.substring(len-5);
+                        let data = {
+                            _id: list._id,
+                            name: list.name,
+                            userName: list.userName,
+                            views: list.views,
+                            likes: list.likes,
+                            dislikes: list.dislikes,
+                            publishDate: date,
+                            items: list.items,
+                            comments: list.comments
+                        };
+                        listData.push(data);   
+                    }
                 }
                 return res.status(200).json({ success: true, top5lists: listData })
             }
         }).catch(err => console.log(err)); 
     }
     else if(req.query.user){
-        await Top5List.find({userName: req.query.user, published: true}, (err, top5Lists) => {
+        await Top5List.find({published: true}, (err, top5Lists) => {
             if (err) {
                 return res.status(400).json({ success: false, error: err })
             }
@@ -228,21 +236,23 @@ getTop5Lists = async (req, res) => {
                     if(list.userName === "Community"){
                         continue; 
                     }
-                    let date = list.publishDate.toDateString();
-                    let len = date.length;
-                    date = date.substring(4, len-5) + "," + date.substring(len-5);
-                    let data = {
-                        _id: list._id,
-                        name: list.name,
-                        userName: list.userName,
-                        views: list.views,
-                        likes: list.likes,
-                        dislikes: list.dislikes,
-                        publishDate: date,
-                        items: list.items,
-                        comments: list.comments
-                    };
-                    listData.push(data);   
+                    if(list.userName.toLowerCase() === req.query.user.toLowerCase()){
+                        let date = list.publishDate.toDateString();
+                        let len = date.length;
+                        date = date.substring(4, len-5) + "," + date.substring(len-5);
+                        let data = {
+                            _id: list._id,
+                            name: list.name,
+                            userName: list.userName,
+                            views: list.views,
+                            likes: list.likes,
+                            dislikes: list.dislikes,
+                            publishDate: date,
+                            items: list.items,
+                            comments: list.comments
+                        };
+                        listData.push(data);   
+                    }
                 }
                 return res.status(200).json({ success: true, top5lists: listData })
             }
@@ -271,7 +281,7 @@ getUserTop5Lists = async (req, res) => {
             if(user === "Community"){
                 for (let key in top5Lists) {
                     let list = top5Lists[key]; 
-                    if(list.name.startsWith(name) && name){
+                    if(list.name.toLowerCase().startsWith(name.toLowerCase()) && name){
                         let date = list.publishDate.toDateString();
                         let len = date.length;
                         date = date.substring(4, len-5) + "," + date.substring(len-5);
@@ -293,7 +303,7 @@ getUserTop5Lists = async (req, res) => {
             else{
                 for (let key in top5Lists) {
                     let list = top5Lists[key];
-                    if(list.name.startsWith(name)||!name){
+                    if(list.name.toLowerCase().startsWith(name.toLowerCase())||!name){
                         let date = null
                         if (list.published){
                             date = list.publishDate.toDateString();
@@ -370,6 +380,33 @@ publishTop5List = async (req, res) => {
                 })
             })
     })
+}
+
+generateCommunityLists = async (req, res) => {
+    await Top5List.find({published: true}, (err, top5Lists) => {
+        if(err){
+            return res.status(404).json({ success: false, error: err });
+        }
+
+        if(!top5Lists){
+            return res.status(200).json(
+                { success: true, message: "No published Top5Lists to generate community lists from"});
+        }
+
+        let listNames = {};
+        for(let key in top5Lists){
+            let list = top5Lists[key]; 
+            if(!listNames[list.name]){
+                listNames[list.name] = "in_object"; 
+            }
+        }
+        let names = Object.keys(listNames); 
+        for(let index in names){
+            updateCommunityLists(names[index]); 
+        }
+        return res.status(200).json(
+            { success: true, message: "Community lists successfully generated"});
+    });
 }
 
 async function updateCommunityLists(name){
@@ -458,5 +495,6 @@ module.exports = {
     getTop5Lists,
     getUserTop5Lists,
     getTop5ListById,
-    publishTop5List
+    publishTop5List,
+    generateCommunityLists
 }
